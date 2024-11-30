@@ -5,13 +5,13 @@
 
   <groupId>shpp.azaika</groupId>
   <artifactId>practical-2-java</artifactId>
-  <version>0.0.1</version>
+  <version>1.0.0</version>
 
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
-    <mainClass>shpp.azaika.App</mainClass>
+    <mainClass>shpp.azaika.MultiplicationTableApp</mainClass>
   </properties>
 
   <dependencyManagement>
@@ -142,6 +142,38 @@
                       </manifestEntries>
                     </transformer>
                   </transformers>
+                  <filters>
+                    <filter>
+                      <artifact>*:*</artifact>
+                      <excludes>
+                        <exclude>config.properties</exclude>
+                      </excludes>
+                    </filter>
+                  </filters>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}</outputDirectory> <!-- Місце розташування файлу -->
+                  <resources>
+                    <resource>
+                      <directory>src/main/resources</directory>
+                      <includes>
+                        <include>config.properties</include> <!-- Включаємо тільки config.properties -->
+                      </includes>
+                    </resource>
+                  </resources>
                 </configuration>
               </execution>
             </executions>
