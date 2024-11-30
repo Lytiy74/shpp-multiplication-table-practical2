@@ -6,6 +6,7 @@ import shpp.azaika.NumberType;
 
 public class RangeValidator {
     private static final Logger logger = LoggerFactory.getLogger(RangeValidator.class);
+    private RangeValidator() {}
 
     public static void validateRangeOfNumber(Number value, NumberType numberType) throws IllegalArgumentException {
         logger.debug("Validating range for value: {} and type: {}", value, numberType);
