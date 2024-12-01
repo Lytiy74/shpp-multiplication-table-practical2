@@ -6,7 +6,7 @@ import shpp.azaika.util.*;
 
 
 public class MultiplicationTableApp {
-    private static Logger logger = LoggerFactory.getLogger(MultiplicationTableApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(MultiplicationTableApp.class);
 
     public static void main(String[] args) {
         Parser numberParser = new ConfigNumberParser();
@@ -17,14 +17,31 @@ public class MultiplicationTableApp {
 
         NumberType numberType = NumberTypeUtils.getSystemNumberType();
 
-        RangeValidator.validateRangeOfNumber(minValue, numberType);
-        RangeValidator.validateRangeOfNumber(maxValue, numberType);
-        RangeValidator.validateRangeOfNumber(increment, numberType);
+        validateRange(minValue, maxValue, increment, numberType);
 
         minValue = NumberTypeUtils.convertToType(minValue, numberType);
         maxValue = NumberTypeUtils.convertToType(maxValue, numberType);
         increment = NumberTypeUtils.convertToType(increment, numberType);
         printMultiplicationTable(minValue, maxValue, increment);
+    }
+
+    private static void validateRange(Number minValue, Number maxValue, Number increment, NumberType numberType) {
+        logger.debug("Validating MINVALUE = [{}] [{}] , MAXVALUE = [{}] [{}] , INCREMENT = [{}] [{}], if they are in range of [{}]", minValue, minValue.getClass().getSimpleName(), maxValue, maxValue.getClass().getSimpleName(), increment
+                , increment.getClass().getSimpleName(), numberType);
+        RangeValidator.validateRangeOfNumber(minValue, numberType);
+        RangeValidator.validateRangeOfNumber(maxValue, numberType);
+        RangeValidator.validateRangeOfNumber(increment, numberType);
+
+        if (minValue.doubleValue() >= maxValue.doubleValue()) {
+            IllegalArgumentException e = new  IllegalArgumentException("minValue must be less than maxValue");
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
+        if (increment.doubleValue() <= 0) {
+            IllegalArgumentException e = new  IllegalArgumentException("increment must be greater than 0");
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
     }
 
     private static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
@@ -52,7 +69,6 @@ public class MultiplicationTableApp {
             min += increment;
         }
     }
-
 
 
 }
