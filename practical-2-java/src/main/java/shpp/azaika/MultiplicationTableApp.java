@@ -47,7 +47,7 @@ public class MultiplicationTableApp {
     public static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
         if (minValue instanceof Double || minValue instanceof Float) {
             printForFloatingPoint(minValue.doubleValue(), maxValue.doubleValue(), incrementValue.doubleValue());
-        } else if (minValue instanceof Long || minValue instanceof Integer) {
+        } else if (minValue instanceof Long || minValue instanceof Integer || minValue instanceof Short || minValue instanceof Byte) {
             printForInteger(minValue.longValue(), maxValue.longValue(), incrementValue.longValue());
         }
     }

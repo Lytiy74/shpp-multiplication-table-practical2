@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import shpp.azaika.NumberType;
 
-import static shpp.azaika.NumberType.SHORT;
 
 public class NumberTypeUtils {
     private static final Logger logger = LoggerFactory.getLogger(NumberTypeUtils.class);
@@ -16,7 +15,7 @@ public class NumberTypeUtils {
         logger.debug("Retrieved tableVariableType from property: [{}]", property);
         return switch (property) {
             case "byte" -> NumberType.BYTE;
-            case "short" -> SHORT;
+            case "short" -> NumberType.SHORT;
             case "int", "integer" -> NumberType.INT;
             case "long" -> NumberType.LONG;
             case "float" -> NumberType.FLOAT;
