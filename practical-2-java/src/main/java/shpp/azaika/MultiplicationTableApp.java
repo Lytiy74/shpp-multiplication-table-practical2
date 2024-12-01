@@ -11,9 +11,9 @@ public class MultiplicationTableApp {
     public static void main(String[] args) {
         Parser numberParser = new ConfigNumberParser();
 
-        Number minValue = (Number) numberParser.parse(Config.getProperty("table.calculation.minValue"));
-        Number maxValue = (Number) numberParser.parse(Config.getProperty("table.calculation.maxValue"));
-        Number increment = (Number) numberParser.parse(Config.getProperty("table.calculation.increment"));
+        Number minValue = numberParser.parse(Config.getProperty("table.calculation.minValue"));
+        Number maxValue = numberParser.parse(Config.getProperty("table.calculation.maxValue"));
+        Number increment = numberParser.parse(Config.getProperty("table.calculation.increment"));
 
         NumberType numberType = NumberTypeUtils.getSystemNumberType();
 
