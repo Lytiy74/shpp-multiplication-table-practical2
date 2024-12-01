@@ -32,6 +32,7 @@ public class ConfigNumberParser implements Parser {
                 return longValue;
             }
         } catch (NumberFormatException e) {
+            logger.error("[{}] parsing failed",s);
             throw new NumberFormatException(e.getMessage());
         }
     }
