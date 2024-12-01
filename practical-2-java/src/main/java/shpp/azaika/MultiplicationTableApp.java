@@ -8,6 +8,7 @@ import shpp.azaika.util.*;
 public class MultiplicationTableApp {
     private static final Logger logger = LoggerFactory.getLogger(MultiplicationTableApp.class);
 
+    //todo merge
     public static void main(String[] args) {
         Parser numberParser = new ConfigNumberParser();
 
