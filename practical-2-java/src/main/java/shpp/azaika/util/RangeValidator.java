@@ -4,72 +4,50 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import shpp.azaika.NumberType;
 
+import java.util.EnumMap;
+import java.util.function.Predicate;
+
 public class RangeValidator {
     private static final Logger logger = LoggerFactory.getLogger(RangeValidator.class);
-    private RangeValidator() {}
 
-    public static void validateRangeOfNumber(Number value, NumberType numberType) throws IllegalArgumentException {
-        logger.debug("Validating range for value: {} and type: {}", value, numberType);
-        long longValue = value.longValue();
-        double doubleValue = value.doubleValue();
+    private RangeValidator() {
+    }
 
-        switch (numberType) {
-            case BYTE:
-                if (!isInByteRange(longValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for BYTE.");
-                }
-                break;
-            case SHORT:
-                if (!isInShortRange(longValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for SHORT.");
-                }
-                break;
-            case INT:
-                if (!isInIntegerRange(longValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for INT.");
-                }
-                break;
-            case LONG:
-                if (!isInLongRange(longValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for LONG.");
-                }
-                break;
-            case FLOAT:
-                if (!isInFloatRange(doubleValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for FLOAT.");
-                }
-                break;
-            case DOUBLE:
-                if (!isInDoubleRange(doubleValue)) {
-                    throw new IllegalArgumentException("Value " + value + " is out of range for DOUBLE.");
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported number type: " + numberType);
+    private static final EnumMap<NumberType, Predicate<Number>> VALIDATION_MAP = new EnumMap<>(NumberType.class);
+
+    static {
+        VALIDATION_MAP.put(NumberType.BYTE, value -> isInRange(value.longValue(), Byte.MIN_VALUE, Byte.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.SHORT, value -> isInRange(value.longValue(), Short.MIN_VALUE, Short.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.INT, value -> isInRange(value.longValue(), Integer.MIN_VALUE, Integer.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.LONG, value -> isInRange(value.longValue(), Long.MIN_VALUE, Long.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.FLOAT, value -> isInRange(value.doubleValue(), Float.MIN_VALUE, Float.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.DOUBLE, value -> isInRange(value.doubleValue(), -Double.MAX_VALUE, Double.MAX_VALUE));
+    }
+
+    public static void validateRangeOfNumber(Number value, NumberType numberType) {
+        logger.debug("Validating range for value: [{}] and type: [{}]", value, numberType);
+
+        Predicate<Number> validator = VALIDATION_MAP.get(numberType);
+        if (validator == null) {
+            IllegalArgumentException e = new IllegalArgumentException("Invalid number type: " + numberType);
+            logger.error(e.getMessage(),e);
+            throw e;
         }
+
+        if (!validator.test(value)) {
+           IllegalArgumentException e = new IllegalArgumentException(
+                    String.format("Value %s is out of range for %s.", value, numberType));
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+        logger.debug("Value [{}] is in valid range of [{}]", value, numberType);
     }
 
-    static boolean isInDoubleRange(double doubleValue) {
-        return doubleValue >= Double.MIN_VALUE && doubleValue <= Double.MAX_VALUE;
+    private static boolean isInRange(long value, long min, long max) {
+        return value >= min && value <= max;
     }
 
-    static boolean isInFloatRange(double doubleValue) {
-        return doubleValue >= Float.MIN_VALUE && doubleValue <= Float.MAX_VALUE;
-    }
-
-    static boolean isInLongRange(long longValue) {
-        return longValue >= Long.MIN_VALUE && longValue <= Long.MAX_VALUE;
-    }
-
-    static boolean isInIntegerRange(long longValue) {
-        return longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE;
-    }
-
-    static boolean isInShortRange(long longValue) {
-        return longValue >= Short.MIN_VALUE && longValue <= Short.MAX_VALUE;
-    }
-
-    static boolean isInByteRange(long longValue) {
-        return longValue >= Byte.MIN_VALUE && longValue <= Byte.MAX_VALUE;
+    private static boolean isInRange(double value, double min, double max) {
+        return value >= min && value <= max;
     }
 }
