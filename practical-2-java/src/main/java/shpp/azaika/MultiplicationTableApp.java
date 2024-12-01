@@ -25,7 +25,7 @@ public class MultiplicationTableApp {
         printMultiplicationTable(minValue, maxValue, increment);
     }
 
-    private static void validateRange(Number minValue, Number maxValue, Number increment, NumberType numberType) {
+    public static void validateRange(Number minValue, Number maxValue, Number increment, NumberType numberType) {
         logger.debug("Validating MINVALUE = [{}] [{}] , MAXVALUE = [{}] [{}] , INCREMENT = [{}] [{}], if they are in range of [{}]", minValue, minValue.getClass().getSimpleName(), maxValue, maxValue.getClass().getSimpleName(), increment
                 , increment.getClass().getSimpleName(), numberType);
         RangeValidator.validateRangeOfNumber(minValue, numberType);
@@ -44,7 +44,7 @@ public class MultiplicationTableApp {
         }
     }
 
-    private static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
+    public static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
         if (minValue instanceof Double || minValue instanceof Float) {
             printForFloatingPoint(minValue.doubleValue(), maxValue.doubleValue(), incrementValue.doubleValue());
         } else if (minValue instanceof Long || minValue instanceof Integer) {
@@ -52,7 +52,7 @@ public class MultiplicationTableApp {
         }
     }
 
-    private static void printForFloatingPoint(double min, double max, double increment) {
+    public static void printForFloatingPoint(double min, double max, double increment) {
         while (min <= max) {
             for (double i = min; i < max; i += increment) {
                 logger.info("{} * {} = {}", min, i, min * i);
@@ -61,7 +61,7 @@ public class MultiplicationTableApp {
         }
     }
 
-    private static void printForInteger(long min, long max, long increment) {
+    public static void printForInteger(long min, long max, long increment) {
         while (min <= max) {
             for (long i = min; i < max; i += increment) {
                 logger.info("{} * {} = {}", min, i, min * i);
