@@ -19,8 +19,8 @@ public class RangeValidator {
         VALIDATION_MAP.put(NumberType.BYTE, value -> isInRange(value.longValue(), Byte.MIN_VALUE, Byte.MAX_VALUE));
         VALIDATION_MAP.put(NumberType.SHORT, value -> isInRange(value.longValue(), Short.MIN_VALUE, Short.MAX_VALUE));
         VALIDATION_MAP.put(NumberType.INT, value -> isInRange(value.longValue(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        VALIDATION_MAP.put(NumberType.LONG, value -> isInRange(value.longValue(), Long.MIN_VALUE, Long.MAX_VALUE));
-        VALIDATION_MAP.put(NumberType.FLOAT, value -> isInRange(value.doubleValue(), Float.MIN_VALUE, Float.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.LONG, value -> isInRange(value.doubleValue(), Long.MIN_VALUE, Long.MAX_VALUE));
+        VALIDATION_MAP.put(NumberType.FLOAT, value -> isInRange(value.doubleValue(), -Float.MAX_VALUE, Float.MAX_VALUE));
         VALIDATION_MAP.put(NumberType.DOUBLE, value -> isInRange(value.doubleValue(), -Double.MAX_VALUE, Double.MAX_VALUE));
     }
 
