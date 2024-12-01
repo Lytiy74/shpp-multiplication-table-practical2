@@ -6,20 +6,18 @@ import shpp.azaika.util.*;
 
 
 public class MultiplicationTableApp {
-    private static Logger logger = LoggerFactory.getLogger(MultiplicationTableApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(MultiplicationTableApp.class);
 
     public static void main(String[] args) {
         Parser numberParser = new ConfigNumberParser();
 
-        Number minValue = (Number) numberParser.parse(Config.getProperty("table.calculation.minValue"));
-        Number maxValue = (Number) numberParser.parse(Config.getProperty("table.calculation.maxValue"));
-        Number increment = (Number) numberParser.parse(Config.getProperty("table.calculation.increment"));
+        Number minValue = numberParser.parse(Config.getProperty("table.calculation.minValue"));
+        Number maxValue = numberParser.parse(Config.getProperty("table.calculation.maxValue"));
+        Number increment = numberParser.parse(Config.getProperty("table.calculation.increment"));
 
         NumberType numberType = NumberTypeUtils.getSystemNumberType();
 
-        RangeValidator.validateRangeOfNumber(minValue, numberType);
-        RangeValidator.validateRangeOfNumber(maxValue, numberType);
-        RangeValidator.validateRangeOfNumber(increment, numberType);
+        validateRange(minValue, maxValue, increment, numberType);
 
         minValue = NumberTypeUtils.convertToType(minValue, numberType);
         maxValue = NumberTypeUtils.convertToType(maxValue, numberType);
@@ -27,7 +25,26 @@ public class MultiplicationTableApp {
         printMultiplicationTable(minValue, maxValue, increment);
     }
 
-    private static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
+    public static void validateRange(Number minValue, Number maxValue, Number increment, NumberType numberType) {
+        logger.debug("Validating MINVALUE = [{}] [{}] , MAXVALUE = [{}] [{}] , INCREMENT = [{}] [{}], if they are in range of [{}]", minValue, minValue.getClass().getSimpleName(), maxValue, maxValue.getClass().getSimpleName(), increment
+                , increment.getClass().getSimpleName(), numberType);
+        RangeValidator.validateRangeOfNumber(minValue, numberType);
+        RangeValidator.validateRangeOfNumber(maxValue, numberType);
+        RangeValidator.validateRangeOfNumber(increment, numberType);
+
+        if (minValue.doubleValue() >= maxValue.doubleValue()) {
+            IllegalArgumentException e = new  IllegalArgumentException("minValue must be less than maxValue");
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
+        if (increment.doubleValue() <= 0) {
+            IllegalArgumentException e = new  IllegalArgumentException("increment must be greater than 0");
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
+    }
+
+    public static void printMultiplicationTable(Number minValue, Number maxValue, Number incrementValue) {
         if (minValue instanceof Double || minValue instanceof Float) {
             printForFloatingPoint(minValue.doubleValue(), maxValue.doubleValue(), incrementValue.doubleValue());
         } else if (minValue instanceof Long || minValue instanceof Integer) {
@@ -35,7 +52,7 @@ public class MultiplicationTableApp {
         }
     }
 
-    private static void printForFloatingPoint(double min, double max, double increment) {
+    public static void printForFloatingPoint(double min, double max, double increment) {
         while (min <= max) {
             for (double i = min; i < max; i += increment) {
                 logger.info("{} * {} = {}", min, i, min * i);
@@ -44,7 +61,7 @@ public class MultiplicationTableApp {
         }
     }
 
-    private static void printForInteger(long min, long max, long increment) {
+    public static void printForInteger(long min, long max, long increment) {
         while (min <= max) {
             for (long i = min; i < max; i += increment) {
                 logger.info("{} * {} = {}", min, i, min * i);
@@ -52,7 +69,6 @@ public class MultiplicationTableApp {
             min += increment;
         }
     }
-
 
 
 }

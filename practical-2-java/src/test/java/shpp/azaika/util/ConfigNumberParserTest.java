@@ -1,7 +1,6 @@
-package shpp.azaika;
+package shpp.azaika.util;
 
 import org.junit.jupiter.api.Test;
-import shpp.azaika.util.ConfigNumberParser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,28 +9,36 @@ class ConfigNumberParserTest {
     private final ConfigNumberParser parser = new ConfigNumberParser();
 
     @Test
-    void testParseInteger() {
-        Number result = parser.parse("42");
+    void testParseByte() {
+        Number result = parser.parse("127");
         assertInstanceOf(Byte.class, result);
     }
-
     @Test
-    void testParseLong() {
-        Number result = parser.parse("123456789");
+    void testParseShort() {
+        Number result = parser.parse("32767");
+        assertInstanceOf(Short.class, result);
+    }
+    @Test
+    void testParseInteger() {
+        Number result = parser.parse("2147483647");
         assertInstanceOf(Integer.class, result);
     }
 
     @Test
+    void testParseLong() {
+        Number result = parser.parse("9223372036854775807");
+        assertInstanceOf(Long.class, result);
+    }
+
+    @Test
     void testParseFloat() {
-        Number result = parser.parse("3.14f");
-        assertEquals(3.14f, result);
+        Number result = parser.parse("3.40282347e+38f");
         assertInstanceOf(Float.class, result);
     }
 
     @Test
     void testParseDouble() {
-        Number result = parser.parse("3.1415");
-        assertEquals(3.1415, result);
+        Number result = parser.parse("1.79769313486231570e+308");
         assertInstanceOf(Double.class, result);
     }
 
