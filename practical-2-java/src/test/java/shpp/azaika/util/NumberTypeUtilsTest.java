@@ -1,7 +1,8 @@
-package shpp.azaika;
+package shpp.azaika.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import shpp.azaika.util.NumberTypeUtils;
+import shpp.azaika.NumberType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +11,7 @@ class NumberTypeUtilsTest {
     @Test
     void testGetSystemNumberTypeDefault() {
         System.setProperty("tableVariableType", "int");
-        assertEquals(NumberType.INT, NumberTypeUtils.getSystemNumberType());
+        Assertions.assertEquals(NumberType.INT, NumberTypeUtils.getSystemNumberType());
     }
 
     @Test
