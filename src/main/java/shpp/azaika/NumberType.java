@@ -6,5 +6,5 @@ public enum NumberType{
     INT,
     LONG,
     FLOAT,
-    DOUBLE;
+    DOUBLE
 }
