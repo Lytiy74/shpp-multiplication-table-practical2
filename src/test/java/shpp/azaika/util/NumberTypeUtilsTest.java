@@ -17,7 +17,7 @@ class NumberTypeUtilsTest {
     @Test
     void testGetSystemNumberTypeInvalidProperty() {
         System.setProperty("tableVariableType", "unknown");
-        assertThrows(IllegalStateException.class, () -> NumberTypeUtils.getSystemNumberType());
+        assertThrows(IllegalStateException.class, NumberTypeUtils::getSystemNumberType);
     }
 
     @Test
